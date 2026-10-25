@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediLink - Simple Client Intake</title>
+    <style>
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background-color: #f4f6f8;
+            color: #333333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+
+        /* Header */
+        header {
+            background-color: #0077b6;
+            color: #ffffff;
+            padding: 16px 20px;
+            text-align: center;
+        }
+
+
+        header h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+
+        header p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+
+        /* Container & Card Layout */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 480px;
+            padding: 24px;
+        }
+
+
+        .card h2 {
+            font-size: 20px;
+            color: #0077b6;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #444444;
+        }
+
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: #fff;
+        }
+
+
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #0077b6;
+        }
+
+
+        /* Error Styles */
+        .error-message {
+            color: #d9534f;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+
+        input.invalid, select.invalid {
+            border-color: #d9534f;
+            background-color: #fff2f2;
+        }
+
+
+        /* Buttons */
+        button {
+            width: 100%;
+            background-color: #0077b6;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+
+        button:hover {
+            background-color: #005b8e;
+        }
+
+
+        .secondary-btn {
+            background-color: #6c757d;
+            margin-top: 12px;
+        }
+
+
+        .secondary-btn:hover {
+            background-color: #5a6268;
+        }
+
+
+        /* Confirmation View */
+        .hidden {
+            display: none;
+        }
+
+
+        .summary-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+
+        .summary-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+
+        .summary-list strong {
+            color: #555;
+        }
+
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 12px;
+            font-size: 12px;
+            color: #777777;
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Header Section -->
+    <header>
+        <h1>MediLink</h1>
+        <p>Client Intake Portal</p>
+    </header>
+
+
+    <!-- Main Content Area -->
+    <main>
+        <div class="card">
+           
+            <!-- Intake Form -->
+            <form id="intakeForm" novalidate>
+                <h2>Client Intake Form</h2>
+
+
+                <!-- Institution Selection -->
+                <div class="form-group">
+                    <label for="institution">Institution</label>
+                    <select id="institution">
+                        <option value="">-- Select Clinic --</option>
+                        <option value="Montreal Medical Clinic">Montreal Medical Clinic</option>
+                        <option value="Downtown Dental Center">Downtown Dental Center</option>
+                        <option value="Eastside Health Clinic">Eastside Health Clinic</option>
+                    </select>
+                    <div id="institutionError" class="error-message">Please select an institution.</div>
+                </div>
+
+
+                <!-- Age Field -->
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" min="1" placeholder="Enter age">
+                    <div id="ageError" class="error-message">Please enter a positive number for age.</div>
+                </div>
+
+
+                <!-- Gender Field -->
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender">
+                        <option value="">-- Select Gender --</option>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Other">Other</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                    <div id="genderError" class="error-message">Please select a gender option.</div>
+                </div>
+
+
+                <!-- Weight Field -->
+                <div class="form-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="number" id="weight" min="1" placeholder="Enter weight in kg">
+                    <div id="weightError" class="error-message">Please enter a valid weight (> 0 kg).</div>
+                </div>
+
+
+                <!-- Height Field -->
+                <div class="form-group">
+                    <label for="height">Height (cm)</label>
+                    <input type="number" id="height" min="1" placeholder="Enter height in cm">
+                    <div id="heightError" class="error-message">Please enter a valid height (> 0 cm).</div>
+                </div>
+
+
+                <button type="submit">Submit Information</button>
+            </form>
+
+
+            <!-- Success Confirmation Screen -->
+            <div id="confirmationScreen" class="hidden">
+                <h2>Form Submitted Successfully</h2>
+                <ul class="summary-list">
+                    <li><strong>Institution:</strong> <span id="sumInstitution"></span></li>
+                    <li><strong>Age:</strong> <span id="sumAge"></span></li>
+                    <li><strong>Gender:</strong> <span id="sumGender"></span></li>
+                    <li><strong>Weight:</strong> <span id="sumWeight"></span> kg</li>
+                    <li><strong>Height:</strong> <span id="sumHeight"></span> cm</li>
+                </ul>
+                <button type="button" class="secondary-btn" id="editBtn">Edit Details</button>
+            </div>
+
+
+        </div>
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+        &copy; MediLink Appointment Management Platform
+    </footer>
+
+
+    <!-- JavaScript Logic -->
+    <script>
+        // DOM Elements
+        const form = document.getElementById('intakeForm');
+        const confirmationScreen = document.getElementById('confirmationScreen');
+        const editBtn = document.getElementById('editBtn');
+
+
+        const fields = {
+            institution: document.getElementById('institution'),
+            age: document.getElementById('age'),
+            gender: document.getElementById('gender'),
+            weight: document.getElementById('weight'),
+            height: document.getElementById('height')
+        };
+
+
+        const errors = {
+            institution: document.getElementById('institutionError'),
+            age: document.getElementById('ageError'),
+            gender: document.getElementById('genderError'),
+            weight: document.getElementById('weightError'),
+            height: document.getElementById('heightError')
+        };
+
+
+        // Form Submission Event Handler
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+           
+            let isValid = true;
+
+
+            // Validate Institution
+            if (fields.institution.value === "") {
+                showError('institution');
+                isValid = false;
+            } else {
+                hideError('institution');
+            }
+
+
+            // Validate Age (> 0)
+            const ageVal = parseFloat(fields.age.value);
+            if (isNaN(ageVal) || ageVal <= 0) {
+                showError('age');
+                isValid = false;
+            } else {
+                hideError('age');
+            }
+
+
+            // Validate Gender
+            if (fields.gender.value === "") {
+                showError('gender');
+                isValid = false;
+            } else {
+                hideError('gender');
+            }
+
+
+            // Validate Weight (> 0)
+            const weightVal = parseFloat(fields.weight.value);
+            if (isNaN(weightVal) || weightVal <= 0) {
+                showError('weight');
+                isValid = false;
+            } else {
+                hideError('weight');
+            }
+
+
+            // Validate Height (> 0)
+            const heightVal = parseFloat(fields.height.value);
+            if (isNaN(heightVal) || heightVal <= 0) {
+                showError('height');
+                isValid = false;
+            } else {
+                hideError('height');
+            }
+
+
+            // If all fields are valid, display confirmation summary
+            if (isValid) {
+                document.getElementById('sumInstitution').textContent = fields.institution.value;
+                document.getElementById('sumAge').textContent = fields.age.value;
+                document.getElementById('sumGender').textContent = fields.gender.value;
+                document.getElementById('sumWeight').textContent = fields.weight.value;
+                document.getElementById('sumHeight').textContent = fields.height.value;
+
+
+                form.classList.add('hidden');
+                confirmationScreen.classList.remove('hidden');
+            }
+        });
+
+
+        // Helper function to display errors
+        function showError(fieldName) {
+            fields[fieldName].classList.add('invalid');
+            errors[fieldName].style.display = 'block';
+        }
+
+
+        // Helper function to hide errors
+        function hideError(fieldName) {
+            fields[fieldName].classList.remove('invalid');
+            errors[fieldName].style.display = 'none';
+        }
+
+
+        // Allow editing details from confirmation view
+        editBtn.addEventListener('click', function() {
+            confirmationScreen.classList.add('hidden');
+            form.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
+
